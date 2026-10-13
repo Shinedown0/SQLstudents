@@ -1,0 +1,5 @@
+# SQLstudentsDROP TABLE IF EXISTS dbo.CourseEnrollments;
+DROP TABLE IF EXISTS dbo.Students;
+DROP TABLE IF EXISTS dbo.Courses;
+DROP TABLE IF EXISTS dbo.Teachers;
+DROP TABLE IF EXISTS dbo.Programs;
