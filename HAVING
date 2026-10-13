@@ -1,0 +1,133 @@
+
+--1. Students with more than one course enrollment
+-- Question:
+-- Which students are enrolled in more than one course?
+
+SELECT
+   s.StudentID,
+   s.StudentName,
+   COUNT(ce.CourseEnrollmentID) AS EnrollmentCount
+FROM dbo.Students s
+LEFT JOIN dbo.CourseEnrollments ce
+   ON s.StudentID = ce.StudentID
+GROUP BY
+   s.StudentID,
+   s.StudentName
+HAVING
+   COUNT(ce.CourseEnrollmentID) > 1;
+
+2. Courses with at least two enrolled students
+-- Question:
+-- Which courses have at least two enrolled students?
+
+SELECT
+   c.CourseID,
+   c.CourseName,
+   COUNT(ce.StudentID) AS StudentCount
+FROM dbo.Courses c
+LEFT JOIN dbo.CourseEnrollments ce
+   ON c.CourseID = ce.CourseID
+GROUP BY
+   c.CourseID,
+   c.CourseName
+HAVING
+   COUNT(ce.StudentID) >= 2;
+
+--3. Teachers who teach more than one course
+-- Question:
+-- Which teachers teach more than one course?
+
+SELECT
+   t.TeacherID,
+   t.TeacherName,
+   COUNT(c.CourseID) AS CourseCount
+FROM dbo.Teachers t
+LEFT JOIN dbo.Courses c
+   ON t.TeacherID = c.TeacherID
+GROUP BY
+   t.TeacherID,
+   t.TeacherName
+HAVING
+   COUNT(c.CourseID) > 1;
+
+--4. Programs with no courses
+-- Question:
+-- Which programs do not have any courses?
+
+SELECT
+   p.ProgramID,
+   p.ProgramName,
+   COUNT(c.CourseID) AS CourseCount
+FROM dbo.Programs p
+LEFT JOIN dbo.Courses c
+   ON p.ProgramID = c.ProgramID
+GROUP BY
+   p.ProgramID,
+   p.ProgramName
+HAVING
+   COUNT(c.CourseID) = 0;
+
+--5. Programs with at least two courses
+-- Question:
+-- Which programs have at least two courses?
+
+SELECT
+   p.ProgramID,
+   p.ProgramName,
+   COUNT(c.CourseID) AS CourseCount
+FROM dbo.Programs p
+LEFT JOIN dbo.Courses c
+   ON p.ProgramID = c.ProgramID
+GROUP BY
+   p.ProgramID,
+   p.ProgramName
+HAVING
+   COUNT(c.CourseID) >= 2;
+
+--6. Teachers with no course enrollments through their courses
+-- Question:
+-- Which teachers have no student enrollments through their courses?
+
+SELECT
+   t.TeacherID,
+   t.TeacherName,
+   COUNT(ce.CourseEnrollmentID) AS TotalEnrollments
+FROM dbo.Teachers t
+LEFT JOIN dbo.Courses c
+   ON t.TeacherID = c.TeacherID
+LEFT JOIN dbo.CourseEnrollments ce
+   ON c.CourseID = ce.CourseID
+GROUP BY
+   t.TeacherID,
+   t.TeacherName
+HAVING
+   COUNT(ce.CourseEnrollmentID) = 0;
+
+--7. Enrollment dates with more than one enrollment
+-- Question:
+-- On which enrollment dates were more than one course enrollment created?
+
+SELECT
+   ce.EnrollmentDate,
+   COUNT(*) AS EnrollmentCount
+FROM dbo.CourseEnrollments ce
+GROUP BY
+   ce.EnrollmentDate
+HAVING
+   COUNT(*) > 1
+ORDER BY
+   ce.EnrollmentDate;
+
+--8. Grades received by at least two students
+-- Question:
+-- Which grades were received by at least two students?
+
+SELECT
+   ce.Grade,
+   COUNT(*) AS StudentCount
+FROM dbo.CourseEnrollments ce
+WHERE ce.Grade IS NOT NULL
+GROUP BY
+   ce.Grade
+HAVING
+   COUNT(*) >= 2;
