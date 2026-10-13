@@ -1,0 +1,79 @@
+
+-- SQL Server (T-SQL) CREATE TABLE scripts
+USE StudentsFull
+CREATE TABLE dbo.Programs
+(
+    ProgramID      INT IDENTITY(1,1) NOT NULL,
+    ProgramName    NVARCHAR(100)     NOT NULL,
+    Description    NVARCHAR(250)     NULL,
+    CONSTRAINT PK_Programs PRIMARY KEY (ProgramID)
+);
+GO
+
+
+CREATE TABLE dbo.Teachers
+(
+    TeacherID      INT IDENTITY(1,1) NOT NULL,
+    TeacherName    NVARCHAR(100)     NOT NULL,
+    Address        NVARCHAR(200)     NULL,
+
+    CONSTRAINT PK_Teachers PRIMARY KEY (TeacherID)
+);
+GO
+
+
+CREATE TABLE dbo.Courses
+(
+    CourseID       INT IDENTITY(1,1) NOT NULL,
+    CourseName     NVARCHAR(100)     NOT NULL,
+    ProgramID      INT               NULL,
+    TeacherID      INT               NULL,
+
+    CONSTRAINT PK_Courses PRIMARY KEY (CourseID),
+
+    CONSTRAINT FK_Courses_Programs
+        FOREIGN KEY (ProgramID)
+        REFERENCES dbo.Programs(ProgramID),
+
+    CONSTRAINT FK_Courses_Teachers
+        FOREIGN KEY (TeacherID)
+        REFERENCES dbo.Teachers(TeacherID)
+);
+GO
+CREATE TABLE dbo.Students
+(
+    StudentID      INT IDENTITY(1,1) NOT NULL,
+    StudentName    NVARCHAR(100)     NOT NULL,
+    StudentEmail   NVARCHAR(150)     NULL,
+    FeesPaid       DECIMAL(10,2)     NULL,
+    DateOfBirth    DATE              NULL,
+    Address        NVARCHAR(200)     NULL,
+
+    CONSTRAINT PK_Students PRIMARY KEY (StudentID)
+);
+GO
+
+CREATE TABLE dbo.CourseEnrollments
+(
+    CourseEnrollmentID  INT IDENTITY(1,1) NOT NULL,
+    StudentID           INT               NOT NULL,
+    CourseID            INT               NOT NULL,
+    EnrollmentDate      DATE              NOT NULL,
+    Grade               NVARCHAR(10)      NULL,
+
+    CONSTRAINT PK_CourseEnrollments 
+        PRIMARY KEY (CourseEnrollmentID),
+
+    CONSTRAINT FK_CourseEnrollments_Students
+        FOREIGN KEY (StudentID)
+        REFERENCES dbo.Students(StudentID),
+
+    CONSTRAINT FK_CourseEnrollments_Courses
+        FOREIGN KEY (CourseID)
+        REFERENCES dbo.Courses(CourseID),
+
+    CONSTRAINT UQ_CourseEnrollments_StudentID_CourseID
+        UNIQUE (StudentID, CourseID)
+);
+
+GO
