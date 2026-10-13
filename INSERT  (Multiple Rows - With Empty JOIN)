@@ -1,0 +1,135 @@
+-- =========================
+-- Programs Seed Data
+-- =========================
+
+SET IDENTITY_INSERT dbo.Programs ON;
+
+INSERT INTO dbo.Programs
+(
+    ProgramID,
+    ProgramName,
+    Description
+)
+VALUES
+(1, 'Computer Science', 'Software development and computer systems program'),
+(2, 'Electrical Engineering', 'Electronics, circuits and embedded systems program'),
+(3, 'Business Administration', 'Management, finance and business operations program'),
+(4, 'Digital Media Design', 'Animation, design and digital content program'),
+(5, 'Mathematics', 'Pure and applied mathematics program');
+
+SET IDENTITY_INSERT dbo.Programs OFF;
+GO
+
+
+-- =========================
+-- Teachers Seed Data
+-- =========================
+
+SET IDENTITY_INSERT dbo.Teachers ON;
+
+INSERT INTO dbo.Teachers
+(
+    TeacherID,
+    TeacherName,
+    Address
+)
+VALUES
+(1, 'John Carter', '12 River Street, London'),
+(2, 'Emily Johnson', '45 Green Avenue, Manchester'),
+(3, 'Michael Brown', '78 King Road, Birmingham'),
+(4, 'Sarah Williams', '21 Oak Street, Leeds'),
+(5, 'David Miller', '9 Station Road, Liverpool');
+
+SET IDENTITY_INSERT dbo.Teachers OFF;
+GO
+
+
+-- =========================
+-- Courses Seed Data
+-- =========================
+
+SET IDENTITY_INSERT dbo.Courses ON;
+
+INSERT INTO dbo.Courses
+(
+    CourseID,
+    CourseName,
+    ProgramID,
+    TeacherID
+)
+VALUES
+(1, 'Introduction to Programming', 1, 1),
+(2, 'Database Systems', 1, 1),
+(3, 'Digital Electronics', 2, 2),
+(4, 'Business Analytics', NULL, 3),
+(5, 'Animation Fundamentals', 4, NULL);
+
+
+SET IDENTITY_INSERT dbo.Courses OFF;
+GO
+
+
+-- =========================
+-- Students Seed Data
+-- =========================
+
+SET IDENTITY_INSERT dbo.Students ON;
+
+INSERT INTO dbo.Students
+(
+    StudentID,
+    StudentName,
+    StudentEmail,
+    FeesPaid,
+    DateOfBirth,
+    Address
+)
+VALUES
+(1, 'Alice Smith', 'alice.smith@example.com', 1200.00, '2004-03-15', '5 Maple Street, London'),
+(2, 'Robert Wilson', 'robert.wilson@example.com', 950.00, '2003-07-22', '18 Hill Road, Manchester'),
+(3, 'Sophia Taylor', 'sophia.taylor@example.com', 1100.00, '2005-01-10', '33 Lake Avenue, Birmingham'),
+(4, 'Daniel Anderson', 'daniel.anderson@example.com', 800.00, '2002-11-05', '41 Park Lane, Leeds'),
+(5, 'Olivia Martin', 'olivia.martin@example.com', NULL, '2004-09-30', '27 Queen Street, Liverpool');
+
+SET IDENTITY_INSERT dbo.Students OFF;
+GO
+
+
+-- =========================
+-- CourseEnrollments Seed Data
+-- =========================
+
+SET IDENTITY_INSERT dbo.CourseEnrollments ON;
+
+INSERT INTO dbo.CourseEnrollments
+(
+    CourseEnrollmentID,
+    StudentID,
+    CourseID,
+    EnrollmentDate,
+    Grade
+)
+VALUES
+(1, 1, 1, '2026-02-01', 'A'),
+(2, 1, 2, '2026-02-03', 'B'),
+(3, 1, 5, '2026-02-05', NULL),
+
+(4, 2, 1, '2026-02-01', 'B'),
+(5, 2, 3, '2026-02-04', 'C'),
+
+(6, 3, 2, '2026-02-02', 'A'),
+(7, 3, 4, '2026-02-06', NULL),
+
+(8, 4, 1, '2026-02-01', 'C'),
+(9, 4, 3, '2026-02-04', 'B'),
+(10, 4, 5, '2026-02-07', NULL);
+
+SET IDENTITY_INSERT dbo.CourseEnrollments OFF;
+GO
+
+SELECT * FROM Students
+SELECT * FROM Courses
+SELECT * FROM Programs
+SELECT * FROM Teachers
+SELECT * FROM CourseEnrollments
+
