@@ -1,0 +1,128 @@
+--1. Students and enrollment count
+-- Question:
+-- How many course enrollments does each student have?
+-- Show all students, even if they have no course enrollment.
+
+SELECT
+   s.StudentID,
+   s.StudentName,
+   COUNT(ce.CourseEnrollmentID) AS EnrollmentCount
+FROM dbo.Students s
+LEFT JOIN dbo.CourseEnrollments ce
+   ON s.StudentID = ce.StudentID
+GROUP BY
+   s.StudentID,
+   s.StudentName;
+
+--2. Courses and student count
+-- Question:
+-- How many students are enrolled in each course?
+-- Show all courses, even if no student is enrolled.
+
+SELECT
+   c.CourseID,
+   c.CourseName,
+   COUNT(ce.StudentID) AS StudentCount
+FROM dbo.Courses c
+LEFT JOIN dbo.CourseEnrollments ce
+   ON c.CourseID = ce.CourseID
+GROUP BY
+   c.CourseID,
+   c.CourseName;
+
+--3. Teachers and course count
+-- Question:
+-- How many courses does each teacher teach?
+-- Show all teachers, even if they do not teach any course.
+
+SELECT
+   t.TeacherID,
+   t.TeacherName,
+   COUNT(c.CourseID) AS CourseCount
+FROM dbo.Teachers t
+LEFT JOIN dbo.Courses c
+   ON t.TeacherID = c.TeacherID
+GROUP BY
+   t.TeacherID,
+   t.TeacherName;
+
+--4. Programs and course count
+-- Question:
+-- How many courses does each program have?
+-- Show all programs, even if they do not have any course.
+
+SELECT
+   p.ProgramID,
+   p.ProgramName,
+   COUNT(c.CourseID) AS CourseCount
+FROM dbo.Programs p
+LEFT JOIN dbo.Courses c
+   ON p.ProgramID = c.ProgramID
+GROUP BY
+   p.ProgramID,
+   p.ProgramName;
+
+--5. Programs and total enrolled students
+-- Question:
+-- How many total course enrollments does each program have?
+-- Show all programs, even if they have no enrollments.
+
+SELECT
+   p.ProgramID,
+   p.ProgramName,
+   COUNT(ce.CourseEnrollmentID) AS TotalEnrollments
+FROM dbo.Programs p
+LEFT JOIN dbo.Courses c
+   ON p.ProgramID = c.ProgramID
+LEFT JOIN dbo.CourseEnrollments ce
+   ON c.CourseID = ce.CourseID
+GROUP BY
+   p.ProgramID,
+   p.ProgramName;
+
+--6. Courses and average grade placeholder
+Mevcut Grade kolonu NVARCHAR(10) olduğu için doğrudan ortalama alınmaz. Ama harf notlarını gruplamak için kullanılabilir.
+-- Question:
+-- How many students received each grade?
+-- Show only existing grades.
+
+SELECT
+   ce.Grade,
+   COUNT(*) AS StudentCount
+FROM dbo.CourseEnrollments ce
+WHERE ce.Grade IS NOT NULL
+GROUP BY
+   ce.Grade;
+
+--7. Enrollment count by date
+-- Question:
+-- How many course enrollments were created on each enrollment date?
+
+SELECT
+   ce.EnrollmentDate,
+   COUNT(*) AS EnrollmentCount
+FROM dbo.CourseEnrollments ce
+GROUP BY
+   ce.EnrollmentDate
+ORDER BY
+   ce.EnrollmentDate;
+
+--8. Teachers and total enrolled students in their courses
+-- Question:
+-- How many total course enrollments does each teacher have through their courses?
+-- Show all teachers, even if they have no courses or enrollments.
+
+SELECT
+   t.TeacherID,
+   t.TeacherName,
+   COUNT(ce.CourseEnrollmentID) AS TotalEnrollments
+FROM dbo.Teachers t
+LEFT JOIN dbo.Courses c
+   ON t.TeacherID = c.TeacherID
+LEFT JOIN dbo.CourseEnrollments ce
+   ON c.CourseID = ce.CourseID
+GROUP BY
+   t.TeacherID,
+   t.TeacherName;
+
+
