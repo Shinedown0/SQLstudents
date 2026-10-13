@@ -1,0 +1,136 @@
+-- Question:
+-- Which students are enrolled in which courses?
+-- Show all students, even if they are not enrolled in any course.
+
+-- Question:
+-- Which teachers teach which courses?
+-- Show all teachers, even if they do not teach any course.
+
+-- Question:
+-- Which programs have which courses?
+-- Show all programs, even if they do not have any course.
+
+—-------------------------------------------------
+
+-- Question:
+-- List all students with their course enrollments, if they have any.
+-- Students without any course enrollment should also be displayed.
+
+SELECT
+   s.StudentID,
+   s.StudentName,
+   ce.CourseEnrollmentID,
+   c.CourseName
+FROM dbo.Students s
+LEFT JOIN dbo.CourseEnrollments ce
+   ON s.StudentID = ce.StudentID
+LEFT JOIN dbo.Courses c
+   ON ce.CourseID = c.CourseID;
+
+-- Question:
+-- List all teachers with the courses they teach, if they teach any.
+-- Teachers without any assigned course should also be displayed.
+
+SELECT
+   t.TeacherID,
+   t.TeacherName,
+   c.CourseName
+FROM dbo.Teachers t
+LEFT JOIN dbo.Courses c
+   ON t.TeacherID = c.TeacherID;
+
+-- Question:
+-- List all programs with their related courses, if they have any.
+-- Programs without any related course should also be displayed.
+
+SELECT
+   p.ProgramID,
+   p.ProgramName,
+   c.CourseName
+FROM dbo.Programs p
+LEFT JOIN dbo.Courses c
+   ON p.ProgramID = c.ProgramID;
+
+
+—-------------------------------
+
+-- Question:
+-- Which students are enrolled in which courses?
+-- Show all students, even if they are not enrolled in any course.
+
+-- Answer
+SELECT Students.StudentID, Students.StudentName, Courses.CourseName FROM Students 
+LEFT JOIN CourseEnrollments ON Students.StudentID = CourseEnrollments.StudentID
+LEFT JOIN Courses ON Courses.CourseID = CourseEnrollments.CourseID
+
+
+-- Question:
+-- Which students are enrolled in which courses?
+-- Show just students has enrolled more than zero courses
+
+SELECT Students.StudentID, Students.StudentName, Courses.CourseName FROM Students
+INNER JOIN CourseEnrollments ON Students.StudentID = CourseEnrollments.StudentID
+INNER JOIN Courses ON Courses.CourseID = CourseEnrollments.CourseID
+
+
+SELECT Students.StudentID, Students.StudentName, Count(Students.StudentID)  FROM Students 
+LEFT JOIN CourseEnrollments ON Students.StudentID = CourseEnrollments.StudentID
+LEFT JOIN Courses ON Courses.CourseID = CourseEnrollments.CourseID
+WHERE Courses.CourseID IS NOT NULL
+GROUP BY Students.StudentID, Students.StudentName
+HAVING COUNT(Students.StudentID) > 0
+
+
+-- Question:
+-- Which teachers teach which courses?
+-- Show all teachers, even if they do not teach any course
+
+SELECT * FROM Teachers 
+LEFT JOIN Courses ON Courses.TeacherID = Teachers.TeacherID
+
+-- Question:
+-- Which teachers teach which students?
+-- Show all teachers, even if they do not teach any students
+
+SELECT Teachers.TeacherName, Students.StudentName  FROM Teachers 
+LEFT JOIN Courses ON Courses.TeacherID = Teachers.TeacherID
+LEFT JOIN CourseEnrollments ON Courses.CourseID = CourseEnrollments.CourseID
+LEFT JOIN Students ON Students.StudentID = CourseEnrollments.StudentID
+
+
+-- Question:
+-- Which Programs has which Teachers?
+-- Show all Programs, even if they do not has any teacher
+
+-- What is the name of my Center/First table
+-- Center/First table Programs
+
+-- What is the name of First join table to access Teachers table from Programs table?
+-- First Join table is Courses
+
+-- What is the name of Second join table to access Teachers table from Programs table?
+-- Second joint table is Teachers
+
+SELECT * FROM Programs
+LEFT JOIN Courses ON Courses.ProgramID = Programs.ProgramID
+LEFT JOIN Teachers ON Teachers.TeacherID = Courses.TeacherID
+
+
+-- Question:
+-- Which Course has which Students?
+-- Show only courses that have matching students.
+
+-- What is the name of my Center/First table?
+-- First table name is Courses
+
+-- What is the name of First join table to access Students table from Courses table?
+-- First join table name is CourseEnrollments
+
+-- What is the name of Second join table to access Students table from Courses table?
+-- Second join table name is Students
+
+SELECT * FROM Courses 
+INNER JOIN CourseEnrollments ON CourseEnrollments.CourseID = Courses.CourseID
+INNER JOIN Students ON Students.StudentID = CourseEnrollments.StudentID
+
+
